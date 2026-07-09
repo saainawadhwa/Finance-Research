@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import yfinance as yf
+from PIL import Image
 
 
 ALPHA = 0.05
@@ -33,7 +34,10 @@ class MarketPeriod:
 PERIODS = [
     MarketPeriod("Dot-com Bubble", "1999-01-01", "2002-12-31"),
     MarketPeriod("Global Financial Crisis", "2007-01-01", "2009-12-31"),
+    MarketPeriod("Normal Market Period 1 (2013-2014)", "2013-01-01", "2014-12-31"),
+    MarketPeriod("Normal Market Period 2 (2016-2017)", "2016-01-01", "2017-12-31"),
     MarketPeriod("COVID Crash", "2020-01-01", "2021-12-31"),
+    MarketPeriod("Inflation / Interest Rate Shock", "2022-01-01", "2022-12-31"),
     MarketPeriod("AI / ChatGPT Period", "2022-11-30", None),
 ]
 
@@ -182,8 +186,8 @@ def plot_results(summary: pd.DataFrame, vr_by_period: dict[str, pd.DataFrame]) -
     fig, (table_axis, plot_axis) = plt.subplots(
         1,
         2,
-        figsize=(16, 6),
-        gridspec_kw={"width_ratios": [1.35, 1.65]},
+        figsize=(22, 10),
+        gridspec_kw={"width_ratios": [1.45, 2.15]},
     )
 
     table_axis.axis("off")
@@ -194,25 +198,52 @@ def plot_results(summary: pd.DataFrame, vr_by_period: dict[str, pd.DataFrame]) -
         loc="center",
     )
     table.auto_set_font_size(False)
-    table.set_fontsize(8)
-    table.scale(1, 1.8)
+    table.set_fontsize(10)
+    table.scale(1.15, 2.2)
 
     for column_index in range(len(summary.columns)):
         table.auto_set_column_width(column_index)
 
+    markers = ["o", "s", "^", "D", "v", "P", "X"]
+    line_styles = ["-", "--", "-.", ":", (0, (5, 1)), (0, (3, 1, 1, 1)), (0, (1, 1))]
     for period_name, vr_results in vr_by_period.items():
-        plot_axis.plot(vr_results["q"], vr_results["VR(q)"], marker="o", label=period_name)
+        index = list(vr_by_period).index(period_name)
+        plot_axis.plot(
+            vr_results["q"],
+            vr_results["VR(q)"],
+            marker=markers[index % len(markers)],
+            linestyle=line_styles[index % len(line_styles)],
+            linewidth=2,
+            markersize=7,
+            label=period_name,
+        )
 
     plot_axis.axhline(1, color="black", linestyle="--", linewidth=1)
     plot_axis.set_title("Variance Ratio Test by Market Period")
     plot_axis.set_xlabel("q (holding period)")
     plot_axis.set_ylabel("VR(q)")
     plot_axis.set_xticks(Q_VALUES)
-    plot_axis.legend()
+    plot_axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=True)
     plot_axis.grid(True, alpha=0.3)
 
     fig.tight_layout()
-    fig.savefig(OUTPUT_FILE, dpi=200, bbox_inches="tight")
+    fig.savefig(OUTPUT_FILE, dpi=300, bbox_inches="tight")
+
+    with Image.open(OUTPUT_FILE) as image:
+        optimized_image = image.convert("RGB")
+        max_width = 1000
+        if optimized_image.width > max_width:
+            max_height = round(optimized_image.height * max_width / optimized_image.width)
+            optimized_image = optimized_image.resize(
+                (max_width, max_height),
+                Image.Resampling.LANCZOS,
+            )
+        optimized_image = optimized_image.convert(
+            "P",
+            palette=Image.Palette.ADAPTIVE,
+            colors=16,
+        )
+        optimized_image.save(OUTPUT_FILE, optimize=True)
 
 
 def main() -> None:
