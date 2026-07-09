@@ -20,7 +20,7 @@ import yfinance as yf
 
 ALPHA = 0.05
 Q_VALUES = [2, 5, 10, 20, 40]
-OUTPUT_FILE = Path("spy_emh_results.png")
+OUTPUT_FILE = Path("emh_tests_table_and_vr_graph.png")
 
 
 @dataclass(frozen=True)
