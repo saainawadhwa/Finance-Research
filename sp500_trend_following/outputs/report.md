@@ -5,13 +5,13 @@ The backtest implementation is ready, but this sandbox could not resolve public 
 Run this from the `sp500_trend_following/` folder when network access is available:
 
 ```bash
-python3 backtest_sp500_trend.py --start 2021-06-14 --end 2026-06-14 --output-dir outputs
+python3 backtest_sp500_trend.py --start 2021-07-10 --end 2026-07-10 --output-dir outputs
 ```
 
 Or use a local SPY CSV containing `Date` and either `Adj Close` or `Close`:
 
 ```bash
-python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-06-14 --end 2026-06-14 --output-dir outputs
+python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-07-10 --end 2026-07-10 --output-dir outputs
 ```
 
 Default assumptions:
@@ -24,4 +24,4 @@ Default assumptions:
 - Capital-gains tax is modeled at `35%` for short-term realized gains and `15%` for long-term realized gains.
 - Taxes are applied to positive realized gains at sale time; losses do not create immediate refunds in this simplified model.
 
-The script writes `summary.csv`, `equity_curve.csv`, `trades.csv`, and a refreshed `report.md` after data loads successfully.
+The refreshed report writes the comparison as a Markdown table with final after-tax value, total return, CAGR, drawdown, trades, fees, and taxes.
