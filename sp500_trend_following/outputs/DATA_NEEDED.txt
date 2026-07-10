@@ -1,0 +1,7 @@
+Price data could not be loaded in the original sandbox because Yahoo Finance and Stooq hosts could not be resolved.
+
+To rerun with online data from the sp500_trend_following folder:
+  python3 backtest_sp500_trend.py --start 2021-06-14 --end 2026-06-14 --output-dir outputs
+
+To rerun with a local file, provide a CSV containing Date plus Adj Close or Close:
+  python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-06-14 --end 2026-06-14 --output-dir outputs
