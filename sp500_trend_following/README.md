@@ -50,11 +50,18 @@ The generated report presents the strategy comparison as a Markdown table with:
 - transaction fees paid
 - capital gains taxes paid
 
+To write the table as its own file after the backtest produces `outputs/summary.csv`, run:
+
+```bash
+python3 make_comparison_table.py --summary outputs/summary.csv --output outputs/comparison_table.md
+```
+
 ## Outputs
 
-The script writes:
+The scripts write:
 
 - `outputs/report.md`: human-readable comparison table and assumptions.
+- `outputs/comparison_table.md`: standalone Markdown results table.
 - `outputs/summary.csv`: key metrics backing the table.
 - `outputs/equity_curve.csv`: daily equity values.
 - `outputs/trades.csv`: all buys, sells, fees, and taxes.
