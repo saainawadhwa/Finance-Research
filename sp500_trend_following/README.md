@@ -56,12 +56,28 @@ To write the table as its own file after the backtest produces `outputs/summary.
 python3 make_comparison_table.py --summary outputs/summary.csv --output outputs/comparison_table.md
 ```
 
+## Generated Figures
+
+The repository workflow downloads real SPY data with `yfinance`, executes the backtest, and commits these generated figures:
+
+![After-tax portfolio value](outputs/equity_curve.png)
+
+![Portfolio drawdown](outputs/drawdown.png)
+
+![SPY price, moving average, and signals](outputs/price_sma_signals.png)
+
+![Comparison table](outputs/comparison_table.png)
+
 ## Outputs
 
 The scripts write:
 
 - `outputs/report.md`: human-readable comparison table and assumptions.
 - `outputs/comparison_table.md`: standalone Markdown results table.
+- `outputs/comparison_table.png`: PNG rendering of the results table.
+- `outputs/equity_curve.png`: after-tax portfolio value chart.
+- `outputs/drawdown.png`: drawdown comparison chart.
+- `outputs/price_sma_signals.png`: SPY price, moving average, and signal chart.
 - `outputs/summary.csv`: key metrics backing the table.
 - `outputs/equity_curve.csv`: daily equity values.
 - `outputs/trades.csv`: all buys, sells, fees, and taxes.
