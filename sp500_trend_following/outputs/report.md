@@ -1,27 +1,28 @@
 # S&P 500 Trend Following vs Buy and Hold
 
-The backtest implementation is ready, but this sandbox could not resolve public market-data hosts, so the live five-year comparison could not be completed here.
+Period: 2021-07-12 to 2026-07-10 (1,668 trading rows).
+Data: local CSV: outputs/spy_yfinance_prices.csv. SPY is used as the investable S&P 500 proxy.
 
-Run this from the `sp500_trend_following/` folder when network access is available:
+## Strategy
 
-```bash
-python3 backtest_sp500_trend.py --start 2021-07-10 --end 2026-07-10 --output-dir outputs
-```
+- Trend following: hold SPY when the prior close is above its 200-day moving average; otherwise hold cash.
+- Buy and hold: buy SPY on the first available date and liquidate on the final date.
+- Initial capital: $100,000.00.
+- Transaction cost: 1.00 bps per trade plus $0.00 fixed commission.
+- Tax model: realized gains are taxed at sale time; short-term gains at 35.00%, long-term gains at 15.00%. Losses do not create immediate refunds in this simplified model.
+- Cash return while out of market: 0.00% annualized.
 
-Or use a local SPY CSV containing `Date` and either `Adj Close` or `Close`:
+## Results
 
-```bash
-python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-07-10 --end 2026-07-10 --output-dir outputs
-```
+| Strategy | Final after-tax value | Total return | CAGR | Max drawdown | Trades | Fees | Taxes |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| trend following | $127,864.80 | 27.86% | 5.05% | -24.02% | 32 | $313.82 | $16,793.20 |
+| buy and hold | $172,054.12 | 72.05% | 11.48% | -24.50% | 2 | $28.48 | $12,715.43 |
 
-Default assumptions:
+Winner on after-tax ending value: **buy and hold**.
 
-- SPY is used as the investable S&P 500 proxy.
-- Trend following holds SPY when the prior close is above the 200-day moving average; otherwise it holds cash.
-- Buy and hold buys SPY at the start and liquidates at the end.
-- Starting capital is `$100,000`.
-- Trading cost is `1` basis point per buy or sell.
-- Capital-gains tax is modeled at `35%` for short-term realized gains and `15%` for long-term realized gains.
-- Taxes are applied to positive realized gains at sale time; losses do not create immediate refunds in this simplified model.
+## Caveats
 
-The refreshed report writes the comparison as a Markdown table with final after-tax value, total return, CAGR, drawdown, trades, fees, and taxes.
+- This is a backtest, not financial or tax advice.
+- SPY adjusted close data includes distributions in the return series, but this model does not separately tax dividends.
+- Tax law depends on filing status, income, state, wash-sale effects, loss carryforwards, and other details. Change the tax-rate arguments to match the scenario you want to study.
