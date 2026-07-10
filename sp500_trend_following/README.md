@@ -1,6 +1,6 @@
 # S&P 500 Trend-Following Backtest
 
-This folder compares a simple S&P 500 trend-following strategy with buy and hold.
+This folder compares a simple S&P 500 trend-following strategy with buy and hold in table form.
 
 SPY is used as the investable S&P 500 proxy because the index itself is not directly tradable. The script prefers adjusted close data so dividends and splits are included in the return path.
 
@@ -17,13 +17,13 @@ The tax model is deliberately simple: positive realized gains are taxed when a s
 ## Run
 
 ```bash
-python3 backtest_sp500_trend.py --start 2021-06-14 --end 2026-06-14 --output-dir outputs
+python3 backtest_sp500_trend.py --start 2021-07-10 --end 2026-07-10 --output-dir outputs
 ```
 
 If online download is unavailable, provide a local CSV containing `Date` and either `Adj Close` or `Close`:
 
 ```bash
-python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-06-14 --end 2026-06-14 --output-dir outputs
+python3 backtest_sp500_trend.py --input path/to/spy.csv --start 2021-07-10 --end 2026-07-10 --output-dir outputs
 ```
 
 Useful knobs:
@@ -38,12 +38,24 @@ Useful knobs:
 --risk-free-rate 0.00
 ```
 
+## Table Output
+
+The generated report presents the strategy comparison as a Markdown table with:
+
+- final after-tax value
+- total return
+- CAGR
+- max drawdown
+- trade count
+- transaction fees paid
+- capital gains taxes paid
+
 ## Outputs
 
 The script writes:
 
-- `outputs/report.md`: human-readable comparison.
-- `outputs/summary.csv`: key metrics.
+- `outputs/report.md`: human-readable comparison table and assumptions.
+- `outputs/summary.csv`: key metrics backing the table.
 - `outputs/equity_curve.csv`: daily equity values.
 - `outputs/trades.csv`: all buys, sells, fees, and taxes.
 - `outputs/prices_used.csv`: normalized input prices.
