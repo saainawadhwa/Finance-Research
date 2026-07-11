@@ -1,0 +1,6 @@
+Market Period,Sectors with 0 Tests Rejecting,Sectors with 1 Test Rejecting,Sectors with 2 Tests Rejecting,Sectors with 3 Tests Rejecting
+Normal Pre-COVID Period,8,2,1,0
+COVID Shock,1,0,9,1
+Post-COVID Recovery,11,0,0,0
+Inflation / Interest Rate Shock,10,1,0,0
+AI Market Period,9,2,0,0
