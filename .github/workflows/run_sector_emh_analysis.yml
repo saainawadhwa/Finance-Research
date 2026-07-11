@@ -1,0 +1,89 @@
+name: Run sector weak-form EMH analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/sector-emh-analysis
+    paths:
+      - sector_emh_analysis.py
+      - requirements.txt
+      - README.md
+      - .github/workflows/run_sector_emh_analysis.yml
+
+permissions:
+  contents: write
+
+jobs:
+  run-sector-emh-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run sector EMH analysis with live market data
+        run: python sector_emh_analysis.py
+
+      - name: Verify requested outputs
+        run: |
+          test -s outputs/sector_emh_detailed_results.csv
+          test -s outputs/sector_emh_detailed_results.md
+          test -s outputs/sector_emh_summary_matrix.csv
+          test -s outputs/sector_emh_heatmap.png
+          test -s outputs/sector_emh_period_summary.csv
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          from PIL import Image
+
+          expected_rows = 11 * 5
+          detailed = pd.read_csv("outputs/sector_emh_detailed_results.csv")
+          summary = pd.read_csv("outputs/sector_emh_summary_matrix.csv", index_col=0)
+          period_summary = pd.read_csv("outputs/sector_emh_period_summary.csv")
+          if len(detailed) != expected_rows:
+              raise SystemExit(f"Expected {expected_rows} detailed rows, found {len(detailed)}")
+          if summary.shape != (11, 5):
+              raise SystemExit(f"Expected 11x5 summary matrix, found {summary.shape}")
+          if len(period_summary) != 5:
+              raise SystemExit(f"Expected 5 period-summary rows, found {len(period_summary)}")
+          Image.open("outputs/sector_emh_heatmap.png").verify()
+          for output in [
+              "outputs/sector_emh_detailed_results.csv",
+              "outputs/sector_emh_detailed_results.md",
+              "outputs/sector_emh_summary_matrix.csv",
+              "outputs/sector_emh_heatmap.png",
+              "outputs/sector_emh_period_summary.csv",
+          ]:
+              if Path(output).stat().st_size == 0:
+                  raise SystemExit(f"{output} is empty")
+          PY
+
+      - name: Commit generated outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add outputs/sector_emh_detailed_results.csv \
+            outputs/sector_emh_detailed_results.md \
+            outputs/sector_emh_summary_matrix.csv \
+            outputs/sector_emh_heatmap.png \
+            outputs/sector_emh_period_summary.csv \
+            README.md
+          if git diff --cached --quiet; then
+            echo "No generated output changes to commit."
+          else
+            git commit -m "Add generated sector EMH outputs [skip ci]"
+            git push
+          fi
