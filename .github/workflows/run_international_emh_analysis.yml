@@ -1,0 +1,116 @@
+name: Run international weak-form EMH analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/international-emh-analysis
+    paths:
+      - international_emh_analysis.py
+      - requirements.txt
+      - README.md
+      - .github/workflows/run_international_emh_analysis.yml
+
+permissions:
+  contents: write
+
+jobs:
+  run-international-emh-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run international EMH analysis with live market data
+        run: python international_emh_analysis.py
+
+      - name: Verify requested outputs
+        run: |
+          test -s outputs/international_emh/international_emh_detailed_results.csv
+          test -s outputs/international_emh/international_emh_summary.csv
+          test -s outputs/international_emh/international_emh_summary.md
+          test -s outputs/international_emh/international_emh_heatmap.png
+          test -s outputs/international_emh/international_emh_variance_ratio.png
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          from PIL import Image
+
+          expected_markets = [
+              "United States benchmark",
+              "United Kingdom",
+              "Germany",
+              "Japan",
+              "China",
+              "India",
+              "Brazil",
+              "Australia",
+              "South Korea",
+              "Canada",
+              "Developed Markets benchmark",
+              "Emerging Markets benchmark",
+          ]
+          expected_periods = [
+              "Normal Pre-COVID Period",
+              "COVID Shock",
+              "Post-COVID Recovery",
+              "Inflation / Interest Rate Shock",
+              "AI Market Period",
+          ]
+          detailed = pd.read_csv("outputs/international_emh/international_emh_detailed_results.csv")
+          summary = pd.read_csv("outputs/international_emh/international_emh_summary.csv", index_col=0)
+          if len(detailed) != len(expected_markets) * len(expected_periods):
+              raise SystemExit(f"Expected 60 detailed rows, found {len(detailed)}")
+          if list(summary.index) != expected_markets:
+              raise SystemExit("Summary matrix market order does not match the requested layout")
+          if list(summary.columns) != expected_periods:
+              raise SystemExit("Summary matrix period order does not match the requested layout")
+          if not summary.map(lambda value: str(value) in {"0/3", "1/3", "2/3", "3/3"}).all().all():
+              raise SystemExit("Summary matrix cells must be formatted as n/3")
+          if detailed["Number of observations"].isna().any() or (detailed["Number of observations"] <= 40).any():
+              raise SystemExit("Every market-period must report sufficient observations")
+          for image in [
+              "outputs/international_emh/international_emh_heatmap.png",
+              "outputs/international_emh/international_emh_variance_ratio.png",
+          ]:
+              Image.open(image).verify()
+          for output in [
+              "outputs/international_emh/international_emh_detailed_results.csv",
+              "outputs/international_emh/international_emh_summary.csv",
+              "outputs/international_emh/international_emh_summary.md",
+              "outputs/international_emh/international_emh_heatmap.png",
+              "outputs/international_emh/international_emh_variance_ratio.png",
+          ]:
+              if Path(output).stat().st_size == 0:
+                  raise SystemExit(f"{output} is empty")
+          PY
+
+      - name: Commit generated outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add outputs/international_emh/international_emh_detailed_results.csv \
+            outputs/international_emh/international_emh_summary.csv \
+            outputs/international_emh/international_emh_summary.md \
+            outputs/international_emh/international_emh_heatmap.png \
+            outputs/international_emh/international_emh_variance_ratio.png \
+            README.md
+          if git diff --cached --quiet; then
+            echo "No generated output changes to commit."
+          else
+            git commit -m "Add generated international EMH outputs [skip ci]"
+            git push
+          fi
