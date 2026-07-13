@@ -1,12 +1,12 @@
-Sector,Normal Pre-COVID Period,COVID Shock,Post-COVID Recovery,Inflation / Interest Rate Shock,AI Market Period
-Communication Services,0,2,0,0,1
-Consumer Discretionary,0,2,0,0,0
-Consumer Staples,2,2,0,0,0
-Energy,0,0,0,0,0
-Financials,0,2,0,0,0
-Health Care,0,2,0,0,1
-Industrials,0,2,0,1,0
-Materials,0,2,0,0,0
-Real Estate,0,2,0,0,0
-Technology,1,3,0,0,0
-Utilities,1,2,0,0,0
+Sector,Normal Pre-COVID,COVID Shock,Post-COVID Recovery,Inflation / Interest Rate Shock,AI Market Period
+Technology,1/3,3/3,0/3,0/3,0/3
+Financials,0/3,2/3,0/3,0/3,0/3
+Healthcare,0/3,2/3,0/3,0/3,1/3
+Energy,0/3,0/3,0/3,0/3,0/3
+Industrials,0/3,2/3,0/3,1/3,0/3
+Consumer Discretionary,0/3,2/3,0/3,0/3,0/3
+Consumer Staples,2/3,2/3,0/3,0/3,0/3
+Utilities,1/3,2/3,0/3,0/3,0/3
+Materials,0/3,2/3,0/3,0/3,0/3
+Real Estate,0/3,2/3,0/3,0/3,0/3
+Communication Services,0/3,2/3,0/3,0/3,1/3
