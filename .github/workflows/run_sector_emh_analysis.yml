@@ -43,29 +43,50 @@ jobs:
           test -s outputs/sector_emh_detailed_results.md
           test -s outputs/sector_emh_summary_matrix.csv
           test -s outputs/sector_emh_heatmap.png
-          test -s outputs/sector_emh_period_summary.csv
           python - <<'PY'
           from pathlib import Path
           import pandas as pd
           from PIL import Image
 
           expected_rows = 11 * 5
+          expected_sectors = [
+              "Technology",
+              "Financials",
+              "Healthcare",
+              "Energy",
+              "Industrials",
+              "Consumer Discretionary",
+              "Consumer Staples",
+              "Utilities",
+              "Materials",
+              "Real Estate",
+              "Communication Services",
+          ]
+          expected_periods = [
+              "Normal Pre-COVID",
+              "COVID Shock",
+              "Post-COVID Recovery",
+              "Inflation / Interest Rate Shock",
+              "AI Market Period",
+          ]
           detailed = pd.read_csv("outputs/sector_emh_detailed_results.csv")
           summary = pd.read_csv("outputs/sector_emh_summary_matrix.csv", index_col=0)
-          period_summary = pd.read_csv("outputs/sector_emh_period_summary.csv")
           if len(detailed) != expected_rows:
               raise SystemExit(f"Expected {expected_rows} detailed rows, found {len(detailed)}")
           if summary.shape != (11, 5):
               raise SystemExit(f"Expected 11x5 summary matrix, found {summary.shape}")
-          if len(period_summary) != 5:
-              raise SystemExit(f"Expected 5 period-summary rows, found {len(period_summary)}")
+          if list(summary.index) != expected_sectors:
+              raise SystemExit("Summary matrix sector order does not match the requested layout")
+          if list(summary.columns) != expected_periods:
+              raise SystemExit("Summary matrix period order does not match the requested layout")
+          if not summary.map(lambda value: str(value) in {"0/3", "1/3", "2/3", "3/3"}).all().all():
+              raise SystemExit("Summary matrix cells must be formatted as n/3")
           Image.open("outputs/sector_emh_heatmap.png").verify()
           for output in [
               "outputs/sector_emh_detailed_results.csv",
               "outputs/sector_emh_detailed_results.md",
               "outputs/sector_emh_summary_matrix.csv",
               "outputs/sector_emh_heatmap.png",
-              "outputs/sector_emh_period_summary.csv",
           ]:
               if Path(output).stat().st_size == 0:
                   raise SystemExit(f"{output} is empty")
@@ -79,7 +100,6 @@ jobs:
             outputs/sector_emh_detailed_results.md \
             outputs/sector_emh_summary_matrix.csv \
             outputs/sector_emh_heatmap.png \
-            outputs/sector_emh_period_summary.csv \
             README.md
           if git diff --cached --quiet; then
             echo "No generated output changes to commit."
