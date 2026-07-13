@@ -38,21 +38,21 @@ class MarketPeriod:
 
 
 SECTORS = [
-    Sector("Communication Services", "XLC"),
+    Sector("Technology", "XLK"),
+    Sector("Financials", "XLF"),
+    Sector("Healthcare", "XLV"),
+    Sector("Energy", "XLE"),
+    Sector("Industrials", "XLI"),
     Sector("Consumer Discretionary", "XLY"),
     Sector("Consumer Staples", "XLP"),
-    Sector("Energy", "XLE"),
-    Sector("Financials", "XLF"),
-    Sector("Health Care", "XLV"),
-    Sector("Industrials", "XLI"),
+    Sector("Utilities", "XLU"),
     Sector("Materials", "XLB"),
     Sector("Real Estate", "XLRE"),
-    Sector("Technology", "XLK"),
-    Sector("Utilities", "XLU"),
+    Sector("Communication Services", "XLC"),
 ]
 
 PERIODS = [
-    MarketPeriod("Normal Pre-COVID Period", "2019-01-01", "2019-12-31"),
+    MarketPeriod("Normal Pre-COVID", "2019-01-01", "2019-12-31"),
     MarketPeriod("COVID Shock", "2020-02-01", "2021-03-31"),
     MarketPeriod("Post-COVID Recovery", "2021-04-01", "2021-12-31"),
     MarketPeriod("Inflation / Interest Rate Shock", "2022-01-01", "2022-12-31"),
@@ -235,21 +235,9 @@ def create_summary_matrix(detailed_results: pd.DataFrame) -> pd.DataFrame:
     return matrix.loc[sector_order, period_order].astype(int)
 
 
-def create_period_summary(summary_matrix: pd.DataFrame) -> pd.DataFrame:
-    """Count how many sectors show each rejection-count level by period."""
-    rows = []
-    for period in summary_matrix.columns:
-        counts = summary_matrix[period].value_counts().to_dict()
-        rows.append(
-            {
-                "Market Period": period,
-                "Sectors with 0 Tests Rejecting": int(counts.get(0, 0)),
-                "Sectors with 1 Test Rejecting": int(counts.get(1, 0)),
-                "Sectors with 2 Tests Rejecting": int(counts.get(2, 0)),
-                "Sectors with 3 Tests Rejecting": int(counts.get(3, 0)),
-            }
-        )
-    return pd.DataFrame(rows)
+def create_display_matrix(summary_matrix: pd.DataFrame) -> pd.DataFrame:
+    """Format rejection counts as n/3 for the saved comparison table."""
+    return summary_matrix.map(lambda value: f"{int(value)}/3")
 
 
 def create_heatmap(summary_matrix: pd.DataFrame, output_path: Path) -> None:
@@ -271,7 +259,7 @@ def create_heatmap(summary_matrix: pd.DataFrame, output_path: Path) -> None:
     for row_index in range(summary_matrix.shape[0]):
         for column_index in range(summary_matrix.shape[1]):
             value = int(summary_matrix.iloc[row_index, column_index])
-            ax.text(column_index, row_index, str(value), ha="center", va="center", color="black", fontsize=12)
+            ax.text(column_index, row_index, f"{value}/3", ha="center", va="center", color="black", fontsize=12)
 
     colorbar = fig.colorbar(image, ax=ax, ticks=[0, 1, 2, 3])
     colorbar.set_label("Number of tests rejecting EMH")
@@ -293,8 +281,13 @@ def verify_outputs(paths: list[Path]) -> None:
         raise RuntimeError(f"Output verification failed for: {formatted}")
 
     pd.read_csv(OUTPUT_DIR / "sector_emh_detailed_results.csv")
-    pd.read_csv(OUTPUT_DIR / "sector_emh_summary_matrix.csv", index_col=0)
-    pd.read_csv(OUTPUT_DIR / "sector_emh_period_summary.csv")
+    summary = pd.read_csv(OUTPUT_DIR / "sector_emh_summary_matrix.csv", index_col=0)
+    expected_sectors = [sector.name for sector in SECTORS]
+    expected_periods = [period.name for period in PERIODS]
+    if list(summary.index) != expected_sectors or list(summary.columns) != expected_periods:
+        raise RuntimeError("Summary matrix does not match the requested sector-period layout.")
+    if not summary.map(lambda value: str(value) in {"0/3", "1/3", "2/3", "3/3"}).all().all():
+        raise RuntimeError("Summary matrix cells must be formatted as n/3.")
     plt.imread(OUTPUT_DIR / "sector_emh_heatmap.png")
 
 
@@ -309,21 +302,19 @@ def main() -> None:
 
     detailed_results = pd.DataFrame(rows)
     summary_matrix = create_summary_matrix(detailed_results)
-    period_summary = create_period_summary(summary_matrix)
+    display_matrix = create_display_matrix(summary_matrix)
 
     detailed_csv = OUTPUT_DIR / "sector_emh_detailed_results.csv"
     detailed_md = OUTPUT_DIR / "sector_emh_detailed_results.md"
     summary_csv = OUTPUT_DIR / "sector_emh_summary_matrix.csv"
     heatmap_png = OUTPUT_DIR / "sector_emh_heatmap.png"
-    period_summary_csv = OUTPUT_DIR / "sector_emh_period_summary.csv"
 
     detailed_results.to_csv(detailed_csv, index=False)
     detailed_md.write_text(markdown_table(detailed_results), encoding="utf-8")
-    summary_matrix.to_csv(summary_csv)
-    period_summary.to_csv(period_summary_csv, index=False)
+    display_matrix.to_csv(summary_csv)
     create_heatmap(summary_matrix, heatmap_png)
 
-    verify_outputs([detailed_csv, detailed_md, summary_csv, heatmap_png, period_summary_csv])
+    verify_outputs([detailed_csv, detailed_md, summary_csv, heatmap_png])
 
     print("Weak-form EMH sector analysis completed.")
     print(f"Detailed rows: {len(detailed_results)}")
