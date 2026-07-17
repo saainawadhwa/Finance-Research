@@ -1,0 +1,46 @@
+market_classification,market_period,period_start,period_end,test,q,test_statistic,z_score,p_value,decision,valid_observations
+Developed Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Variance Ratio Test,40,0.607489,-0.869526,0.38456,Insufficient evidence against weak-form EMH,252
+Developed Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Lag-1 Autocorrelation Test,,-0.055596,-0.882552,0.377479,Insufficient evidence against weak-form EMH,252
+Developed Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Runs Test,,1.291399,,0.196565,Insufficient evidence against weak-form EMH,250
+Developed Markets,COVID Shock,2020-02-01,2021-03-31,Variance Ratio Test,2,0.76309,-4.055244,5e-05,Reject weak-form EMH,293
+Developed Markets,COVID Shock,2020-02-01,2021-03-31,Lag-1 Autocorrelation Test,,-0.239424,-4.098274,4.2e-05,Reject weak-form EMH,293
+Developed Markets,COVID Shock,2020-02-01,2021-03-31,Runs Test,,1.237564,,0.215878,Insufficient evidence against weak-form EMH,292
+Developed Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Variance Ratio Test,40,0.21202,-1.519712,0.128583,Insufficient evidence against weak-form EMH,191
+Developed Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Lag-1 Autocorrelation Test,,-0.047478,-0.656158,0.511722,Insufficient evidence against weak-form EMH,191
+Developed Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Runs Test,,1.207619,,0.227194,Insufficient evidence against weak-form EMH,191
+Developed Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Variance Ratio Test,2,1.022931,0.363291,0.716388,Insufficient evidence against weak-form EMH,251
+Developed Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Lag-1 Autocorrelation Test,,0.020324,0.321994,0.747458,Insufficient evidence against weak-form EMH,251
+Developed Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Runs Test,,-0.936711,,0.348907,Insufficient evidence against weak-form EMH,250
+Developed Markets,AI Market Period,2023-01-01,2024-12-31,Variance Ratio Test,40,0.693145,-0.959433,0.337341,Insufficient evidence against weak-form EMH,502
+Developed Markets,AI Market Period,2023-01-01,2024-12-31,Lag-1 Autocorrelation Test,,-0.021476,-0.481175,0.630392,Insufficient evidence against weak-form EMH,502
+Developed Markets,AI Market Period,2023-01-01,2024-12-31,Runs Test,,0.790822,,0.429048,Insufficient evidence against weak-form EMH,498
+Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Variance Ratio Test,10,1.20442,0.961106,0.336499,Insufficient evidence against weak-form EMH,252
+Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Lag-1 Autocorrelation Test,,0.020203,0.32071,0.74843,Insufficient evidence against weak-form EMH,252
+Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Runs Test,,-0.844307,,0.398498,Insufficient evidence against weak-form EMH,248
+Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Variance Ratio Test,2,0.656668,-5.876905,0.0,Reject weak-form EMH,293
+Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Lag-1 Autocorrelation Test,,-0.345267,-5.910019,0.0,Reject weak-form EMH,293
+Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Runs Test,,2.885493,,0.003908,Reject weak-form EMH,291
+Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Variance Ratio Test,20,0.497782,-1.396564,0.162545,Insufficient evidence against weak-form EMH,191
+Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Lag-1 Autocorrelation Test,,-0.028814,-0.398212,0.690474,Insufficient evidence against weak-form EMH,191
+Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Runs Test,,0.001532,,0.998778,Insufficient evidence against weak-form EMH,190
+Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Variance Ratio Test,5,0.872611,-0.921189,0.356952,Insufficient evidence against weak-form EMH,251
+Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Lag-1 Autocorrelation Test,,-0.023435,-0.371281,0.710428,Insufficient evidence against weak-form EMH,251
+Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Runs Test,,0.456319,,0.648161,Insufficient evidence against weak-form EMH,249
+Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Variance Ratio Test,40,0.569264,-1.346768,0.178055,Insufficient evidence against weak-form EMH,502
+Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Lag-1 Autocorrelation Test,,-0.027606,-0.61853,0.536226,Insufficient evidence against weak-form EMH,502
+Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Runs Test,,-0.338829,,0.734739,Insufficient evidence against weak-form EMH,499
+Frontier and Selected Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Variance Ratio Test,2,0.82816,-2.727879,0.006374,Reject weak-form EMH,252
+Frontier and Selected Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Lag-1 Autocorrelation Test,,-0.170499,-2.706592,0.006798,Reject weak-form EMH,252
+Frontier and Selected Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,Runs Test,,0.796082,,0.425984,Insufficient evidence against weak-form EMH,246
+Frontier and Selected Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Variance Ratio Test,2,0.681258,-5.455978,0.0,Reject weak-form EMH,293
+Frontier and Selected Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Lag-1 Autocorrelation Test,,-0.320089,-5.479037,0.0,Reject weak-form EMH,293
+Frontier and Selected Emerging Markets,COVID Shock,2020-02-01,2021-03-31,Runs Test,,1.426626,,0.153688,Insufficient evidence against weak-form EMH,288
+Frontier and Selected Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Variance Ratio Test,20,1.332207,0.923798,0.355591,Insufficient evidence against weak-form EMH,191
+Frontier and Selected Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Lag-1 Autocorrelation Test,,-0.053048,-0.733136,0.463476,Insufficient evidence against weak-form EMH,191
+Frontier and Selected Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,Runs Test,,-0.186143,,0.852333,Insufficient evidence against weak-form EMH,187
+Frontier and Selected Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Variance Ratio Test,20,1.573998,1.82978,0.067283,Insufficient evidence against weak-form EMH,251
+Frontier and Selected Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Lag-1 Autocorrelation Test,,-0.018836,-0.298421,0.765382,Insufficient evidence against weak-form EMH,251
+Frontier and Selected Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,Runs Test,,0.166565,,0.867712,Insufficient evidence against weak-form EMH,244
+Frontier and Selected Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Variance Ratio Test,10,1.264881,1.757721,0.078795,Insufficient evidence against weak-form EMH,502
+Frontier and Selected Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Lag-1 Autocorrelation Test,,0.011254,0.252156,0.80092,Insufficient evidence against weak-form EMH,502
+Frontier and Selected Emerging Markets,AI Market Period,2023-01-01,2024-12-31,Runs Test,,-0.137508,,0.890629,Insufficient evidence against weak-form EMH,479
