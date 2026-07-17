@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="580" viewBox="0 0 980 580">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40" y="38" font-size="22" font-weight="700" fill="#111827">Variance-Ratio Comparison by Market Classification</text>
+<text x="40" y="60" font-size="13" fill="#4b5563">Full sample, daily log returns; random-walk benchmark is VR = 1.</text>
+<rect x="86" y="72" width="654" height="430" fill="#f9fafb" stroke="#d1d5db"/>
+<line x1="86" x2="740" y1="502.0" y2="502.0" stroke="#e5e7eb"/>
+<text x="74" y="506.0" text-anchor="end" font-size="12" fill="#4b5563">0.50</text>
+<line x1="86" x2="740" y1="394.5" y2="394.5" stroke="#e5e7eb"/>
+<text x="74" y="398.5" text-anchor="end" font-size="12" fill="#4b5563">0.75</text>
+<line x1="86" x2="740" y1="287.0" y2="287.0" stroke="#e5e7eb"/>
+<text x="74" y="291.0" text-anchor="end" font-size="12" fill="#4b5563">1.00</text>
+<line x1="86" x2="740" y1="179.5" y2="179.5" stroke="#e5e7eb"/>
+<text x="74" y="183.5" text-anchor="end" font-size="12" fill="#4b5563">1.25</text>
+<line x1="86" x2="740" y1="72.0" y2="72.0" stroke="#e5e7eb"/>
+<text x="74" y="76.0" text-anchor="end" font-size="12" fill="#4b5563">1.50</text>
+<line x1="86" x2="740" y1="287.0" y2="287.0" stroke="#111827" stroke-dasharray="5 5"/>
+<line x1="86.0" x2="86.0" y1="72" y2="502" stroke="#eef2f7"/>
+<text x="86.0" y="530" text-anchor="middle" font-size="13" fill="#111827">2</text>
+<line x1="249.5" x2="249.5" y1="72" y2="502" stroke="#eef2f7"/>
+<text x="249.5" y="530" text-anchor="middle" font-size="13" fill="#111827">5</text>
+<line x1="413.0" x2="413.0" y1="72" y2="502" stroke="#eef2f7"/>
+<text x="413.0" y="530" text-anchor="middle" font-size="13" fill="#111827">10</text>
+<line x1="576.5" x2="576.5" y1="72" y2="502" stroke="#eef2f7"/>
+<text x="576.5" y="530" text-anchor="middle" font-size="13" fill="#111827">20</text>
+<line x1="740.0" x2="740.0" y1="72" y2="502" stroke="#eef2f7"/>
+<text x="740.0" y="530" text-anchor="middle" font-size="13" fill="#111827">40</text>
+<path d="M86.0,324.3 L249.5,303.1 L413.0,306.0 L576.5,322.9 L740.0,353.3" fill="none" stroke="#2563eb" stroke-width="3"/>
+<circle cx="86.0" cy="324.25692000000004" r="5" fill="#2563eb"/>
+<circle cx="249.5" cy="303.06394" r="5" fill="#2563eb"/>
+<circle cx="413.0" cy="305.95483" r="5" fill="#2563eb"/>
+<circle cx="576.5" cy="322.91188" r="5" fill="#2563eb"/>
+<circle cx="740.0" cy="353.27891" r="5" fill="#2563eb"/>
+<line x1="776" x2="806" y1="104" y2="104" stroke="#2563eb" stroke-width="3"/>
+<text x="816" y="108" font-size="13" fill="#111827">Developed Markets</text>
+<path d="M86.0,330.3 L249.5,332.9 L413.0,346.2 L576.5,363.2 L740.0,371.3" fill="none" stroke="#b45309" stroke-width="3"/>
+<rect x="81.0" y="325.30659" width="10" height="10" fill="#b45309"/>
+<rect x="244.5" y="327.92916" width="10" height="10" fill="#b45309"/>
+<rect x="408.0" y="341.15166" width="10" height="10" fill="#b45309"/>
+<rect x="571.5" y="358.17407000000003" width="10" height="10" fill="#b45309"/>
+<rect x="735.0" y="366.33633000000003" width="10" height="10" fill="#b45309"/>
+<line x1="776" x2="806" y1="136" y2="136" stroke="#b45309" stroke-width="3"/>
+<text x="816" y="140" font-size="13" fill="#111827">Emerging Markets</text>
+<path d="M86.0,344.9 L249.5,300.6 L413.0,235.2 L576.5,185.7 L740.0,144.5" fill="none" stroke="#047857" stroke-width="3"/>
+<path d="M86.0,338.93347 L92.0,344.93347 L86.0,350.93347 L80.0,344.93347 Z" fill="#047857"/>
+<path d="M249.5,294.56908 L255.5,300.56908 L249.5,306.56908 L243.5,300.56908 Z" fill="#047857"/>
+<path d="M413.0,229.22799999999998 L419.0,235.22799999999998 L413.0,241.22799999999998 L407.0,235.22799999999998 Z" fill="#047857"/>
+<path d="M576.5,179.71221000000003 L582.5,185.71221000000003 L576.5,191.71221000000003 L570.5,185.71221000000003 Z" fill="#047857"/>
+<path d="M740.0,138.51305000000002 L746.0,144.51305000000002 L740.0,150.51305000000002 L734.0,144.51305000000002 Z" fill="#047857"/>
+<line x1="776" x2="806" y1="168" y2="168" stroke="#047857" stroke-width="3"/>
+<text x="816" y="172" font-size="13" fill="#111827">Frontier and Selected Emerging Markets</text>
+<text x="413.0" y="558" text-anchor="middle" font-size="13" fill="#111827">Variance-ratio horizon q</text>
+<text transform="translate(24 287.0) rotate(-90)" text-anchor="middle" font-size="13" fill="#111827">Variance ratio</text>
+</svg>
