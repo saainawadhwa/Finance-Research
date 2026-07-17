@@ -1,0 +1,16 @@
+market_classification,market_period,period_start,period_end,rejections,display
+Developed Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,0,0/3
+Developed Markets,COVID Shock,2020-02-01,2021-03-31,2,2/3
+Developed Markets,Post-COVID Recovery,2021-04-01,2021-12-31,0,0/3
+Developed Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,0,0/3
+Developed Markets,AI Market Period,2023-01-01,2024-12-31,0,0/3
+Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,0,0/3
+Emerging Markets,COVID Shock,2020-02-01,2021-03-31,3,3/3
+Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,0,0/3
+Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,0,0/3
+Emerging Markets,AI Market Period,2023-01-01,2024-12-31,0,0/3
+Frontier and Selected Emerging Markets,Normal Pre-COVID Period,2019-01-01,2019-12-31,2,2/3
+Frontier and Selected Emerging Markets,COVID Shock,2020-02-01,2021-03-31,2,2/3
+Frontier and Selected Emerging Markets,Post-COVID Recovery,2021-04-01,2021-12-31,0,0/3
+Frontier and Selected Emerging Markets,Inflation / Interest Rate Shock,2022-01-01,2022-12-31,0,0/3
+Frontier and Selected Emerging Markets,AI Market Period,2023-01-01,2024-12-31,0,0/3
