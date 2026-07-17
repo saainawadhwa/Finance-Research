@@ -1,0 +1,16 @@
+market_classification,q,variance_ratio,z_score,p_value,valid_observations
+Developed Markets,2,0.913356,-4.345193,1.4e-05,2515
+Developed Markets,5,0.962642,-0.855124,0.392482,2515
+Developed Markets,10,0.955919,-0.65474,0.512635,2515
+Developed Markets,20,0.916484,-0.842733,0.399378,2515
+Developed Markets,40,0.845863,-1.078716,0.280715,2515
+Emerging Markets,2,0.899287,-5.050746,0.0,2515
+Emerging Markets,5,0.893188,-2.444931,0.014488,2515
+Emerging Markets,10,0.862438,-2.043224,0.04103,2515
+Emerging Markets,20,0.822851,-1.787549,0.073849,2515
+Emerging Markets,40,0.803869,-1.372601,0.169877,2515
+Frontier and Selected Emerging Markets,2,0.865271,-6.756641,0.0,2515
+Frontier and Selected Emerging Markets,5,0.968444,-0.722312,0.470102,2515
+Frontier and Selected Emerging Markets,10,1.1204,1.788307,0.073727,2515
+Frontier and Selected Emerging Markets,20,1.235553,2.376892,0.017459,2515
+Frontier and Selected Emerging Markets,40,1.331365,2.319024,0.020394,2515
