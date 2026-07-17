@@ -1,0 +1,13 @@
+ticker,country_or_market,first_valid_date,last_valid_date,observations,max_gap_days,included,reason,note
+VNM,Vietnam,2015-01-02,2024-12-31,2516,4,No,"Reliable, but not included in the final analysis because fewer than four reliable frontier-country instruments were available; FM fallback used",US-listed Vietnam ETF
+PAK,Pakistan,2015-04-22,2024-03-05,2233,4,No,Last valid date does not cover the full analysis period,US-listed Pakistan ETF
+BTBETRETF.RO,Romania,,,0,,No,No adjusted-close observations in sample,Yahoo search result for Romania ETF
+GLCR,Iceland,,,0,,No,Yahoo download failed: HTTP Error 400: Bad Request,"US-listed Iceland ETF, listed after sample period"
+0LLQ.L,Vietnam,2018-01-29,2024-12-31,774,168,No,Insufficient observations: 774 < 800,London-listed Vietnam ETF; duplicate country check
+2804.HK,Vietnam,2019-07-16,2024-12-31,1347,6,No,Listing date misses the beginning of the regime sample,Hong Kong-listed Vietnam ETF; duplicate country check
+00885.TW,Vietnam,2021-03-30,2024-12-31,917,13,No,Listing date misses the beginning of the regime sample,Taiwan-listed Vietnam ETF; duplicate country check
+FRN,Frontier multi-country,2015-01-02,2020-11-24,1458,5,No,Not a single-country frontier instrument,Former frontier-market ETF; not a single-country instrument
+NGE,Nigeria,2015-01-02,2024-03-28,2325,4,No,Checked but not used as a current pure MSCI frontier-country proxy,Country ETF checked as frontier/standalone candidate
+EGPT,Egypt,2015-01-02,2024-04-04,2329,4,No,Checked but not used as a current pure MSCI frontier-country proxy,Country ETF checked but not a current pure frontier proxy
+ARGT,Argentina,2015-01-02,2024-12-31,2516,4,No,Checked but not used as a current pure MSCI frontier-country proxy,Country ETF checked but not a current pure frontier proxy
+KWT,Kuwait,2020-09-03,2024-12-31,1088,4,No,Checked but not used as a current pure MSCI frontier-country proxy,Country ETF checked but listed after start of regime sample
