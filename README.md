@@ -8,6 +8,7 @@ This repository contains finance research projects covering weak-form market eff
 - **International market efficiency analysis**: compares weak-form EMH evidence across global equity-market ETFs and market regimes.
 - **U.S. sector market efficiency analysis**: compares weak-form EMH rejection patterns across U.S. sector ETFs and market regimes.
 - **S&P 500 trend-following backtest**: compares a trend-following strategy with buy-and-hold after fees and taxes.
+- **Market Classification Analysis**: compares Developed, Emerging, and Frontier/Selected Emerging equity-market proxies across the same market regimes, with variance-ratio, autocorrelation, and runs tests.
 
 ## Key Files
 
@@ -17,6 +18,8 @@ This repository contains finance research projects covering weak-form market eff
 - `sp500_trend_following/`
 - `outputs/international_emh/`
 - `outputs/sector_emh_*`
+- `outputs/market_classification_*`
+- `outputs/variance_ratio_by_market_classification.*`
 
 ## Run Locally
 
