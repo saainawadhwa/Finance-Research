@@ -1,0 +1,194 @@
+name: Run S&P 500 Trend Following Backtest
+
+on:
+  push:
+    branches:
+      - codex/trend-following-backtest
+    paths:
+      - 'sp500_trend_following/**'
+      - '.github/workflows/run_sp500_trend_following.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-backtest:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sp500_trend_following
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/trend-following-backtest
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+
+      - name: Download SPY data with yfinance
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import yfinance as yf
+
+          symbol = 'SPY'
+          start = '2019-11-18'
+          end = '2026-07-10'
+          output_dir = Path('outputs')
+          output_dir.mkdir(parents=True, exist_ok=True)
+          data = yf.download(symbol, start=start, end='2026-07-11', auto_adjust=False, progress=False, actions=True)
+          if data.empty:
+              raise SystemExit('yfinance returned no SPY rows')
+          if isinstance(data.columns, pd.MultiIndex):
+              if symbol in data.columns.get_level_values(-1):
+                  data = data.xs(symbol, axis=1, level=-1)
+              else:
+                  data.columns = data.columns.get_level_values(0)
+          price_col = 'Adj Close' if 'Adj Close' in data.columns else 'Close'
+          out = data.reset_index()[['Date', 'Close', price_col]].copy()
+          out.columns = ['Date', 'Close', 'Adj Close']
+          out.to_csv(output_dir / 'spy_yfinance_prices.csv', index=False)
+          print(f'Downloaded {len(out)} SPY rows from yfinance')
+          PY
+
+      - name: Execute backtest
+        run: python backtest_sp500_trend.py --input outputs/spy_yfinance_prices.csv --start 2021-07-10 --end 2026-07-10 --output-dir outputs
+
+      - name: Generate standalone Markdown table
+        run: python make_comparison_table.py --summary outputs/summary.csv --output outputs/comparison_table.md
+
+      - name: Generate graphs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import matplotlib.pyplot as plt
+          import pandas as pd
+
+          output_dir = Path('outputs')
+          equity = pd.read_csv(output_dir / 'equity_curve.csv')
+          trades = pd.read_csv(output_dir / 'trades.csv')
+          summary = pd.read_csv(output_dir / 'summary.csv')
+          dates = pd.to_datetime(equity['date'])
+
+          def money(value):
+              return f'${value:,.2f}'
+
+          def pct(value):
+              return f'{value * 100:.2f}%'
+
+          def drawdown(values):
+              return values / values.cummax() - 1.0
+
+          plt.style.use('seaborn-v0_8-whitegrid')
+
+          fig, axis = plt.subplots(figsize=(12, 7))
+          axis.plot(dates, equity['trend_following'], label='Trend following', linewidth=2.2)
+          axis.plot(dates, equity['buy_and_hold'], label='Buy and hold', linewidth=2.2)
+          axis.set_title('After-Tax Portfolio Value')
+          axis.set_ylabel('Portfolio value ($)')
+          axis.legend()
+          axis.yaxis.set_major_formatter(lambda value, _: f'${value:,.0f}')
+          fig.autofmt_xdate()
+          fig.tight_layout()
+          fig.savefig(output_dir / 'equity_curve.png', dpi=180)
+          plt.close(fig)
+
+          fig, axis = plt.subplots(figsize=(12, 7))
+          axis.plot(dates, drawdown(equity['trend_following']), label='Trend following', linewidth=2.2)
+          axis.plot(dates, drawdown(equity['buy_and_hold']), label='Buy and hold', linewidth=2.2)
+          axis.set_title('Portfolio Drawdown')
+          axis.set_ylabel('Drawdown')
+          axis.legend()
+          axis.yaxis.set_major_formatter(lambda value, _: f'{value:.0%}')
+          fig.autofmt_xdate()
+          fig.tight_layout()
+          fig.savefig(output_dir / 'drawdown.png', dpi=180)
+          plt.close(fig)
+
+          fig, axis = plt.subplots(figsize=(12, 7))
+          axis.plot(dates, equity['price'], label='SPY adjusted close', linewidth=1.7)
+          axis.plot(dates, equity['sma'], label='200-day moving average', linewidth=1.7)
+          signal = equity['signal'].astype(bool)
+          axis.fill_between(
+              dates,
+              equity['price'].min(),
+              equity['price'].max(),
+              where=signal,
+              color='#8ab17d',
+              alpha=0.16,
+              label='Trend strategy in market',
+          )
+          if not trades.empty:
+              trend_trades = trades[trades['strategy'] == 'trend_following'].copy()
+              buys = trend_trades[trend_trades['action'].str.startswith('BUY')]
+              sells = trend_trades[trend_trades['action'].str.startswith('SELL')]
+              if not buys.empty:
+                  axis.scatter(pd.to_datetime(buys['date']), buys['price'], marker='^', color='#1b9e77', s=75, zorder=4, label='Trend buy')
+              if not sells.empty:
+                  axis.scatter(pd.to_datetime(sells['date']), sells['price'], marker='v', color='#d95f02', s=75, zorder=4, label='Trend sell')
+          axis.set_title('SPY Price, 200-Day Average, and Trend Signals')
+          axis.set_ylabel('Adjusted price ($)')
+          axis.legend()
+          fig.autofmt_xdate()
+          fig.tight_layout()
+          fig.savefig(output_dir / 'price_sma_signals.png', dpi=180)
+          plt.close(fig)
+
+          fig, axis = plt.subplots(figsize=(13, 3.4))
+          axis.axis('off')
+          display = summary.copy()
+          display['strategy'] = display['strategy'].str.replace('_', ' ', regex=False)
+          display['final_after_tax_value'] = display['final_after_tax_value'].map(money)
+          display['total_after_tax_return'] = display['total_after_tax_return'].map(pct)
+          display['after_tax_cagr'] = display['after_tax_cagr'].map(pct)
+          display['max_drawdown'] = display['max_drawdown'].map(pct)
+          display['fees_paid'] = display['fees_paid'].map(money)
+          display['tax_paid'] = display['tax_paid'].map(money)
+          display = display[['strategy', 'final_after_tax_value', 'total_after_tax_return', 'after_tax_cagr', 'max_drawdown', 'trades', 'fees_paid', 'tax_paid']]
+          display.columns = ['Strategy', 'Final after-tax value', 'Total return', 'CAGR', 'Max drawdown', 'Trades', 'Fees', 'Taxes']
+          table = axis.table(cellText=display.values, colLabels=display.columns, loc='center')
+          table.auto_set_font_size(False)
+          table.set_fontsize(9)
+          table.scale(1, 1.8)
+          for column_index in range(len(display.columns)):
+              table.auto_set_column_width(column_index)
+          fig.tight_layout()
+          fig.savefig(output_dir / 'comparison_table.png', dpi=180, bbox_inches='tight')
+          plt.close(fig)
+          PY
+
+      - name: Verify generated outputs
+        run: |
+          test -s outputs/spy_yfinance_prices.csv
+          test -s outputs/prices_used.csv
+          test -s outputs/summary.csv
+          test -s outputs/equity_curve.csv
+          test -s outputs/trades.csv
+          test -s outputs/report.md
+          test -s outputs/comparison_table.md
+          test -s outputs/equity_curve.png
+          test -s outputs/drawdown.png
+          test -s outputs/price_sma_signals.png
+          test -s outputs/comparison_table.png
+          ls -lh outputs
+
+      - name: Commit generated outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add outputs README.md
+          if git diff --cached --quiet; then
+            echo 'No generated output changes to commit.'
+          else
+            git commit -m 'Add generated S&P 500 trend following outputs [skip ci]'
+            git push origin HEAD:codex/trend-following-backtest
+          fi
