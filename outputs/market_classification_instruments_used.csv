@@ -1,0 +1,4 @@
+market_classification,ticker,country_or_market,first_valid_date,last_valid_date,observations,note
+Developed Markets,EFA,Developed Markets,2015-01-02,2024-12-31,2516,iShares MSCI EAFE ETF; developed markets ex-US and Canada
+Emerging Markets,EEM,Emerging Markets,2015-01-02,2024-12-31,2516,iShares MSCI Emerging Markets ETF
+Frontier and Selected Emerging Markets,FM,Frontier and Selected Emerging Markets,2015-01-02,2024-12-31,2516,iShares Frontier and Select EM ETF fallback; not a pure frontier-market benchmark
